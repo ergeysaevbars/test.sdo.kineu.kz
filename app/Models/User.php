@@ -51,4 +51,9 @@ class User extends Authenticatable
     }
 
     public $timestamps = false;
+
+    public function tests()
+    {
+        return $this->hasMany(Test::class, 'user_id');
+    }
 }

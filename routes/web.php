@@ -20,4 +20,8 @@ Auth::routes([
     'confirm'  => false
 ]);
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
+Route::middleware('auth')->group(function (){
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Route::resource('tests', \App\Http\Controllers\TestController::class);
+});
