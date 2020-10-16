@@ -13,4 +13,9 @@ class Speciality extends Model
      * @var $table - Название таблицы
      */
     protected $table = 'kv_spec';
+
+    public function groups()
+    {
+        return $this->hasMany(Group::class, 'spec_name', 'name')->active();
+    }
 }
