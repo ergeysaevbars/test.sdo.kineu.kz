@@ -34,6 +34,6 @@ class Group extends Model
                 $query->where('spec_year', Carbon::now()->year - (Carbon::now()->month > 8 ? 1 : 2))
                     ->where('spec_forma', 'not like', '%1 год%');
             })->orWhere('spec_year', Carbon::now()->year - (Carbon::now()->month > 8 ? 0 : 1));
-        });
+        })->orderBy('spec_year')->orderBy('spec_forma');
     }
 }

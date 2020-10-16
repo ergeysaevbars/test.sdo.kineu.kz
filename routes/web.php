@@ -24,4 +24,5 @@ Route::middleware('auth')->group(function (){
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::resource('tests', \App\Http\Controllers\TestController::class);
+    Route::get('/groups/{speciality}', [\App\Http\Controllers\TestController::class, 'groups'])->name('groups');
 });

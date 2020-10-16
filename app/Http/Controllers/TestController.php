@@ -85,4 +85,9 @@ class TestController extends Controller
     {
         //
     }
+
+    public function groups(Speciality $speciality)
+    {
+        return view('test.groups', compact('speciality'));
+    }
 }
