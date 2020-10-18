@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TestsRequest;
 use App\Models\Speciality;
 use App\Models\Test;
 use App\Models\TestsType;
+use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class TestController extends Controller
 {
@@ -21,7 +26,7 @@ class TestController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -33,12 +38,17 @@ class TestController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  TestsRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(TestsRequest $request)
     {
-        //
+        $test = new Test($request->only('name_test', 'type_test'));
+        $test->user_id = Auth::id();
+        $test->load_date = Carbon::now()->toDateTimeString();
+        $test->save();
+
+        return redirect()->route('home');
     }
 
     /**

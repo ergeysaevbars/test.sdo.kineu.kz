@@ -28,4 +28,8 @@ class Test extends Model
      * @var $table - Название таблицы
      */
     protected $table = 'kv_tests_name';
+
+    protected $fillable = ['name_test', 'type_test'];
+
+    public $timestamps = false;
 }
