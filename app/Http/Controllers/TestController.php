@@ -77,18 +77,18 @@ class TestController extends Controller
             return redirect()->back();
         }
 
-        return redirect()->route('tests.show', $test->id);
+        return redirect()->route('test.show', $test->id);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Test  $test
-     * @return \Illuminate\Http\Response
+     * @return @return \Illuminate\Contracts\View\View
      */
     public function show(Test $test)
     {
-        //
+         return view('test.show', compact('test'));
     }
 
     /**

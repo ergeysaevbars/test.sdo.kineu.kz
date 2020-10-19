@@ -32,4 +32,14 @@ class Test extends Model
     protected $fillable = ['name_test', 'type_test'];
 
     public $timestamps = false;
+
+    public function type()
+    {
+        return $this->belongsTo(TestsType::class, 'type_test');
+    }
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class, 'id_test');
+    }
 }
