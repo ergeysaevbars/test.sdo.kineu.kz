@@ -6,6 +6,12 @@
             Создать новый тест
         </div>
         <div class="card-body">
+            @if(\Illuminate\Support\Facades\Session::has('error'))
+                <div class="alert alert-danger" role="alert">
+                    {{ \Illuminate\Support\Facades\Session::get('error') }}
+                </div>
+                <br>
+            @endif
             <form action="{{ route('tests.store') }}" method="post">
                 @csrf
                 <div class="form-group">

@@ -10,17 +10,23 @@ use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
+use Mockery\Exception;
 
 class TestController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function index()
     {
+        $tests = Auth::user()->tests;
+
+        return view('test.index', compact('tests'));
     }
 
     /**
@@ -43,12 +49,35 @@ class TestController extends Controller
      */
     public function store(TestsRequest $request)
     {
-        $test = new Test($request->only('name_test', 'type_test'));
-        $test->user_id = Auth::id();
-        $test->load_date = Carbon::now()->toDateTimeString();
-        $test->save();
+        try {
+            $test = new Test($request->only('name_test', 'type_test'));
+            $test->user_id = Auth::id();
+            $test->load_date = Carbon::now()->toDateTimeString();
 
-        return redirect()->route('home');
+            if (!$test->save()) {
+                Session::flash('error', "Произошла ошибка при сохранении теста. Пожалуйста попробуйте позже");
+
+                Log::error("Произошла ошибка при сохранении теста. Пожалуйста попробуйте позже", [
+                    'name_test' => $request->get('name_test'),
+                    'type_test' => $request->get('name_test'),
+                    'user_id'   => Auth::id(),
+                ]);
+
+                return redirect()->back();
+            }
+        } catch (Exception $e) {
+            Session::flash('error', "Произошла ошибкаа при сохранении теста. Пожалуйста попробуйте позже");
+
+            Log::error("Произошла ошибкаа при сохранении теста. Пожалуйста попробуйте позже", [
+                'name_test' => $request->get('name_test'),
+                'type_test' => $request->get('name_test'),
+                'user_id'   => Auth::id(),
+            ]);
+
+            return redirect()->back();
+        }
+
+        return redirect()->route('tests.show', $test->id);
     }
 
     /**
