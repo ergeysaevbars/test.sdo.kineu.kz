@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QuestionRequest;
 use App\Models\Question;
 use App\Models\Test;
+use DOMDocument;
 use Illuminate\Http\Request;
 
 class QuestionsController extends Controller
@@ -21,6 +23,7 @@ class QuestionsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \App\Models\Test  $test
      * @return \Illuminate\Http\Response
      */
     public function create(Test $test)
@@ -31,12 +34,13 @@ class QuestionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  QuestionRequest  $request
+     * @param  \App\Models\Test  $test
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(QuestionRequest $request, Test $test)
     {
-        //
+
     }
 
     /**

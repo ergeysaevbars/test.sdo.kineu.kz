@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\QuestionsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +26,9 @@ Route::middleware('auth')->group(function (){
 
     Route::resource('tests', \App\Http\Controllers\TestController::class);
 
-    Route::get('/test/{test}/question/create', [\App\Http\Controllers\QuestionsController::class, 'create'])->name('questions.create');
+    Route::prefix('/test/{test}')->group(function (){
+        Route::resource('questions', QuestionsController::class);
+    });
 
     Route::get('/groups/{speciality}', [\App\Http\Controllers\TestController::class, 'groups'])->name('groups');
 });
