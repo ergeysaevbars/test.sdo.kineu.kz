@@ -33,6 +33,8 @@ class Question extends Model
 
     protected $fillable = ['id_test', 'vopros', 'otvet1', 'otvet2', 'otvet3', 'otvet4', 'otvet5', 'prav_otvet'];
 
+    public $timestamps = false;
+
     public function test()
     {
         return $this->belongsTo(Test::class, 'id_test');
