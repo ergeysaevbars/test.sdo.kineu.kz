@@ -5,12 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\QuestionRequest;
 use App\Models\Question;
 use App\Models\Test;
-use DOMDocument;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use Mockery\Exception;
 
 class QuestionsController extends Controller
 {
@@ -54,14 +51,14 @@ class QuestionsController extends Controller
 
         try {
             $question = new Question([
-                'id_test' => $test->id,
-                'vopros' => strip_tags($request->get('vopros'), '<img><sub><sup>'),
-                'otvet1' => strip_tags($request->get('otvet1'), '<img><sub><sup>'),
-                'otvet2' => strip_tags($request->get('otvet2'), '<img><sub><sup>'),
-                'otvet3' => strip_tags($request->get('otvet3'), '<img><sub><sup>'),
-                'otvet4' => strip_tags($request->get('otvet4'), '<img><sub><sup>'),
-                'otvet5' => strip_tags($request->get('otvet5'), '<img><sub><sup>'),
-                'prav_otvet' => strip_tags($request->get('prav_otvet'), '<img><sub><sup>'),
+                'id_test'    => $test->id,
+                'vopros'     => strip_tags($request->get('vopros'), '<img><sub><sup>'),
+                'otvet1'     => strip_tags($request->get('otvet1'), '<img><sub><sup>'),
+                'otvet2'     => strip_tags($request->get('otvet2'), '<img><sub><sup>'),
+                'otvet3'     => strip_tags($request->get('otvet3'), '<img><sub><sup>'),
+                'otvet4'     => strip_tags($request->get('otvet4'), '<img><sub><sup>'),
+                'otvet5'     => strip_tags($request->get('otvet5'), '<img><sub><sup>'),
+                'prav_otvet' => $request->get('prav_otvet'),
             ]);
 
             $question->nom_vop_disc = $nom_vop_disc;
@@ -69,7 +66,7 @@ class QuestionsController extends Controller
             if (!$question->save()) {
                 Session::flash('error', "Произошла ошибка при попытке создания вопроса. Пожалуйста попробуйте позже.");
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Log::error("Произошла ошибка при попытке создания вопроса.", [
                 'request' => $request->except('_token'),
                 'user_id' => Auth::id(),
@@ -81,6 +78,7 @@ class QuestionsController extends Controller
 
             Session::flash('error', "Произошла ошибка при попытке создания вопроса. Пожалуйста попробуйте позже.");
         }
+
         return redirect()->route('tests.show', $test);
     }
 
@@ -98,24 +96,49 @@ class QuestionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
+     * @param  \App\Models\Test  $test
      * @param  \App\Models\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function edit(Question $question)
+    public function edit(Test $test, Question $question)
     {
-        //
+        return view('questions.form', compact('test', 'question'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  QuestionRequest  $request
+     * @param  \App\Models\Test  $test
      * @param  \App\Models\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Question $question)
+    public function update(QuestionRequest $request, Test $test, Question $question)
     {
-        //
+        try {
+            $question->vopros = strip_tags($request->get('vopros'), '<img><sub><sup>');
+            for ($i = 1; $i <= 5; $i++) {
+                $question->{"otvet$i"} = strip_tags($request->get("otvet$i"), '<img><sub><sup>');
+            }
+            $question->prav_otvet = $request->get('prav_otvet');
+
+            if (!$question->save()) {
+                Session::flash('error', "Произошла ошибка при попытке создания вопроса. Пожалуйста попробуйте позже.");
+            }
+        } catch (\Exception $e) {
+            Log::error("Произошла ошибка при попытке редактирования вопроса.", [
+                'request' => $request->except('_token'),
+                'user_id' => Auth::id(),
+                'test_id' => $test->id,
+                'message' => $e->getMessage(),
+                'code'    => $e->getCode(),
+                'trace'   => $e->getTrace(),
+            ]);
+
+            Session::flash('error', "Произошла ошибка при попытке редактирования вопроса. Пожалуйста попробуйте позже.");
+        }
+
+        return redirect()->route('tests.show', $test);
     }
 
     /**

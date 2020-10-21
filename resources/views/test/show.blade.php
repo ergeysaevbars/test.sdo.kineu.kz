@@ -17,8 +17,7 @@
 
             @forelse($test->questions as $question)
                 <div class="card-body">
-                    <a class="btn btn-sm btn-primary float-right"
-                       href="/teacher/test/edit/test_id/3917/question/683117">
+                    <a class="btn btn-sm btn-primary float-right" href="{{ route('questions.edit', [$test, $question->id]) }}">
                         Редактировать
                     </a>
                     <p class="card-text"><b>Вопрос № {{ $loop->iteration }}.</b> {!! $question->vopros !!}</p>
