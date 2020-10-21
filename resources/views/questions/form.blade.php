@@ -7,6 +7,12 @@
             <span class="float-right">Форма добавления нового вопроса</span>
         </div>
         <div class="card-body">
+            @error('prav_otvet')
+                <div class="alert alert-danger" role="alert">
+                    {{ $message }}
+                </div>
+            @enderror
+
             <form action="{{ route('questions.store', $test) }}" method="post">
                 @csrf
                 <!-- Вопрос -->
@@ -26,7 +32,11 @@
                 <!-- Ответы -->
                 @for ($i = 1; $i <= 5; $i++)
                     <div class="form-group">
-                        <label for="otvet{{ $i }}">Ответ {{ $i }}</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prav_otvet" id="otvet{{ $i }}"
+                                   value="{{ $i }}" {{ old('prav_otvet') == $i ? 'checked' : '' }}>
+                            <label class="form-check-label" for="otvet{{ $i }}">Ответ {{ $i }}</label>
+                        </div>
                         <textarea class="textarea @if($errors->has("otvet$i")) is-invalid @endif" name="otvet{{ $i }}"
                                   id="otvet{{ $i }}">
                         {{ old("otvet$i") }}
