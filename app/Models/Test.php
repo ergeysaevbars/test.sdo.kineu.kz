@@ -42,4 +42,9 @@ class Test extends Model
     {
         return $this->hasMany(Question::class, 'id_test');
     }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

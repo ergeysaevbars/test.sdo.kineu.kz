@@ -17,6 +17,11 @@ use Mockery\Exception;
 
 class TestController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Test::class, 'test');
+    }
+
     /**
      * Display a listing of the resource.
      *
