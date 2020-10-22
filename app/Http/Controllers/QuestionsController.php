@@ -144,11 +144,34 @@ class QuestionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \App\Models\Test  $test
      * @param  \App\Models\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Question $question)
+    public function destroy(Test $test, Question $question)
     {
-        //
+        try {
+            if (!$question->delete()) {
+                Log::error("Произошла ошибка при удалении вопроса.", [
+                    'test_id'     => $test->id,
+                    'question_id' => $question->id,
+                    'user_id'     => Auth::id()
+                ]);
+
+                Session::flash('error', "Произошла ошибка при удалении вопроса. Пожалуйста попробуйте позже");
+            }
+        } catch (\Exception $e) {
+            Log::error("Произошла ошибка при удалении вопроса.", [
+                'test_id'     => $test->id,
+                'question_id' => $question->id,
+                'user_id'     => Auth::id(),
+                'message'     => $e->getMessage(),
+                'code'    => $e->getCode(),
+                'trace'   => $e->getTrace(),
+            ]);
+
+            Session::flash('error', "Произошла ошибка при удалении вопроса. Пожалуйста попробуйте позже");
+        }
+        return redirect()->back();
     }
 }

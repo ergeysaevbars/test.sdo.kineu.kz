@@ -29,6 +29,11 @@
                             @endif
                         </p>
                     @endforeach
+                    <form class="float-right" action="{{ route('questions.destroy', [$test, $question]) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-sm btn-danger">Удалить</button>
+                    </form>
                 </div>
                 <hr>
             @empty
