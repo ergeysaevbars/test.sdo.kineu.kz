@@ -41,7 +41,7 @@ class TestPolicy
      */
     public function create(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class TestPolicy
      */
     public function update(User $user, Test $test)
     {
-        //
+        return $user == $test->author;
     }
 
     /**

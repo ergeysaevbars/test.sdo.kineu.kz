@@ -29,8 +29,7 @@ class TestController extends Controller
      */
     public function index()
     {
-        $tests = Auth::user()->tests;
-
+        $tests = Auth::user()->tests()->orderBy('id', 'desc')->with('type')->get();
         return view('test.index', compact('tests'));
     }
 
@@ -71,9 +70,9 @@ class TestController extends Controller
                 return redirect()->back();
             }
         } catch (Exception $e) {
-            Session::flash('error', "Произошла ошибкаа при сохранении теста. Пожалуйста попробуйте позже");
+            Session::flash('error', "Произошла ошибка при сохранении теста. Пожалуйста попробуйте позже");
 
-            Log::error("Произошла ошибкаа при сохранении теста. Пожалуйста попробуйте позже", [
+            Log::error("Произошла ошибка при сохранении теста. Пожалуйста попробуйте позже", [
                 'name_test' => $request->get('name_test'),
                 'type_test' => $request->get('name_test'),
                 'user_id'   => Auth::id(),
@@ -82,7 +81,7 @@ class TestController extends Controller
             return redirect()->back();
         }
 
-        return redirect()->route('test.show', $test->id);
+        return redirect()->route('tests.show', $test->id);
     }
 
     /**
@@ -104,19 +103,47 @@ class TestController extends Controller
      */
     public function edit(Test $test)
     {
-        //
+        $types = TestsType::query()->where('id', '<>', 4)->get();
+        return view('test.form', compact('test', 'types'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  TestsRequest  $request
      * @param  \App\Models\Test  $test
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Test $test)
+    public function update(TestsRequest $request, Test $test)
     {
-        //
+        try {
+            $test->name_test = $request->get('name_test');
+            $test->type_test = $request->get('type_test');
+
+            if (!$test->save()) {
+                Session::flash('error', "Произошла ошибка при редактировании теста. Пожалуйста попробуйте позже");
+
+                Log::error("Произошла ошибка при редактировании теста. Пожалуйста попробуйте позже", [
+                    'name_test' => $request->get('name_test'),
+                    'type_test' => $request->get('name_test'),
+                    'user_id'   => Auth::id(),
+                ]);
+
+                return redirect()->back();
+            }
+        } catch (\Exception $e) {
+            Session::flash('error', "Произошла ошибка при редактировании теста. Пожалуйста попробуйте позже");
+
+            Log::error("Произошла ошибка при редактировании теста. Пожалуйста попробуйте позже", [
+                'name_test' => $request->get('name_test'),
+                'type_test' => $request->get('name_test'),
+                'user_id'   => Auth::id(),
+            ]);
+
+            return redirect()->back();
+        }
+
+        return redirect()->route('tests.index');
     }
 
     /**
