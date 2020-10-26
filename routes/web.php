@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('/test/{test}')->group(function (){
         Route::resource('questions', QuestionsController::class);
-    });
 
-    Route::get('/groups/{speciality}', [\App\Http\Controllers\TestController::class, 'groups'])->name('groups');
+        Route::get('/groups', [\App\Http\Controllers\TestController::class, 'groups'])->name('test.groups');
+    });
 });

@@ -157,8 +157,9 @@ class TestController extends Controller
         //
     }
 
-    public function groups(Speciality $speciality)
+    public function groups(Test $test)
     {
-        return view('test.groups', compact('speciality'));
+        $specialities = Speciality::query()->with('groups')->get();
+        return view('test.groups', compact('test', 'specialities'));
     }
 }
