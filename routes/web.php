@@ -28,7 +28,10 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('/test/{test}')->group(function (){
         Route::resource('questions', QuestionsController::class);
+
+        Route::get('/groups', [\App\Http\Controllers\SpecialitiesController::class, 'index'])->name('test.groups');
+        Route::get('/groups/add', [\App\Http\Controllers\SpecialitiesController::class, 'add'])->name('test.groups.add');
+        Route::post('/groups/add', [\App\Http\Controllers\SpecialitiesController::class, 'store'])->name('test.groups.store');
     });
 
-    Route::get('/groups/{speciality}', [\App\Http\Controllers\TestController::class, 'groups'])->name('groups');
 });

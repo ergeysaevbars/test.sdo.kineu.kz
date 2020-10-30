@@ -1,10 +1,18 @@
 $(document).ready(function () {
-    $('#speciality').change(function () {
+    $('#spec').on('change', function () {
         $.get(
-            '/groups/' + $(this).val(),
+            '/api/speciality/' + $(this).val() + '/groups',
             function (data) {
-                $('#table-groups').html(data);
+                var options = '<option value="0">Выберите группу</option>';
+
+                for (var id in data) {
+                    options += '<option value="' + data[id]['spec_id'] + '">' + data[id]['gruppa'] + '</option>';
+                }
+
+                $('#group').html(options);
             }
-        );
+        ).fail(function () {
+            $('#group').empty();
+        });
     });
 });

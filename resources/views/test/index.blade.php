@@ -25,6 +25,7 @@
                         <td>
                             <a href="{{route('tests.show', $test)}}" class="btn btn-sm btn-success">Открыть</a>
                             <a href="{{route('tests.edit', $test)}}" class="btn btn-sm btn-warning">Редактировать</a>
+                            <a href="{{route('test.groups', $test)}}" class="btn btn-sm btn-primary">Группы</a>
                         </td>
                     </tr>
                 @empty

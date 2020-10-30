@@ -20,14 +20,6 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-
-{{--SELECT * FROM specialnost sp
-WHERE sp.spec_name NOT LIKE '\_%'
-AND (
-    (sp.spec_year = year(now()) - IF(month(now()) > 8, 3, 4) AND sp.spec_forma LIKE '%базовая%')
-)
-ORDER BY `sp`.`spec_name` ASC--}}
-
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">

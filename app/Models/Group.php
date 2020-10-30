@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Group extends Model
 {
@@ -35,5 +36,10 @@ class Group extends Model
                     ->where('spec_forma', 'not like', '%1 год%');
             })->orWhere('spec_year', Carbon::now()->year - (Carbon::now()->month > 8 ? 0 : 1));
         })->orderBy('spec_year')->orderBy('spec_forma');
+    }
+
+    public function groupName()
+    {
+        return DB::selectOne("SELECT get_group_name_by_spec_id(?) gruppa", [$this->spec_id])->gruppa;
     }
 }
