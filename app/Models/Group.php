@@ -40,6 +40,6 @@ class Group extends Model
 
     public function groupName()
     {
-        return DB::selectOne("SELECT 	get_group_name_by_spec_id(?) `group` FROM specialnost", [$this->spec_id])->group;
+        return DB::selectOne("SELECT get_group_name_by_spec_id(?) gruppa", [$this->spec_id])->gruppa;
     }
 }

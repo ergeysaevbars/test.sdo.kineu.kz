@@ -47,4 +47,9 @@ class Test extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'speciality_test', 'test_id', 'speciality_id');
+    }
 }
