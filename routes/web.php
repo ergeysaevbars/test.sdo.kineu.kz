@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function (){
         Route::get('/groups', [\App\Http\Controllers\SpecialitiesController::class, 'index'])->name('test.groups');
         Route::get('/groups/add', [\App\Http\Controllers\SpecialitiesController::class, 'add'])->name('test.groups.add');
         Route::post('/groups/add', [\App\Http\Controllers\SpecialitiesController::class, 'store'])->name('test.groups.store');
+        Route::delete('/groups/{group}', [\App\Http\Controllers\SpecialitiesController::class, 'detach'])->name('test.groups.delete');
     });
 
 });

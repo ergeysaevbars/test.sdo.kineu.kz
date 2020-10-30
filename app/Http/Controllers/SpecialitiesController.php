@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Speciality;
 use App\Models\Test;
+use App\Models\Group;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SpecialitiesController extends Controller
@@ -34,6 +36,15 @@ class SpecialitiesController extends Controller
             'min'      => "Некорректно указана группа",
         ]);
 
+        $test->groups()->attach($request->get('group'), ['created_at' => Carbon::now()->toDateTimeString()]);
 
+        return redirect()->route('test.groups', $test);
+    }
+
+    public function detach(Test $test, Group $group)
+    {
+        $test->groups()->detach($group);
+
+        return redirect()->back();
     }
 }
