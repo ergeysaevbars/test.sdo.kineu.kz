@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Session;
 
 class QuestionsController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Question::class, 'question');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -90,7 +95,7 @@ class QuestionsController extends Controller
      */
     public function show(Question $question)
     {
-        //
+
     }
 
     /**
@@ -102,6 +107,10 @@ class QuestionsController extends Controller
      */
     public function edit(Test $test, Question $question)
     {
+        if ($test != $question->test) {
+            return response("Ошибка", 400);
+        }
+
         return view('questions.form', compact('test', 'question'));
     }
 

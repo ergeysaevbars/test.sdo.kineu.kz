@@ -11,6 +11,11 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    /**
+     * Администратор
+     */
+    const ADMIN = 'admin';
+
     protected $table = 'kv_users';
     protected $primaryKey = 'id_users';
 
@@ -57,5 +62,8 @@ class User extends Authenticatable
         return $this->hasMany(Test::class, 'user_id');
     }
 
-
+    public function usersRole()
+    {
+        return $this->hasOne(Role::class, 'id_role', 'role');
+    }
 }

@@ -28,9 +28,4 @@ class HomeController extends Controller
         $tests = Auth::user()->tests;
         return view('home', compact('tests'));
     }
-
-    public function g()
-    {
-        dd(session()->get('message'));
-    }
 }

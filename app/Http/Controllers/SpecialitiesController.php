@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 class SpecialitiesController extends Controller
 {
+
+
     public function index(Test $test)
     {
         return view('test.groups', compact('test'));

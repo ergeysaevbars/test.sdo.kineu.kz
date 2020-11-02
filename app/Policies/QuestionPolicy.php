@@ -2,11 +2,12 @@
 
 namespace App\Policies;
 
+use App\Models\Question;
 use App\Models\Test;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TestPolicy
+class QuestionPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +19,19 @@ class TestPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Test  $test
+     * @param  \App\Models\Question  $question
      * @return mixed
      */
-    public function view(User $user, Test $test)
+    public function view(User $user, Question $question)
     {
-        return $user == $test->author || User::ADMIN === $user->usersRole->role_name;
+        return true;
     }
 
     /**
@@ -48,22 +49,22 @@ class TestPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Test  $test
+     * @param  \App\Models\Question  $question
      * @return mixed
      */
-    public function update(User $user, Test $test)
+    public function update(User $user, Question $question)
     {
-        return $user == $test->author;
+        return $user->tests->contains($question->test);
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Test  $test
+     * @param  \App\Models\Question  $question
      * @return mixed
      */
-    public function delete(User $user, Test $test)
+    public function delete(User $user, Question $question)
     {
         //
     }
@@ -72,10 +73,10 @@ class TestPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Test  $test
+     * @param  \App\Models\Question  $question
      * @return mixed
      */
-    public function restore(User $user, Test $test)
+    public function restore(User $user, Question $question)
     {
         //
     }
@@ -84,10 +85,10 @@ class TestPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Test  $test
+     * @param  \App\Models\Question  $question
      * @return mixed
      */
-    public function forceDelete(User $user, Test $test)
+    public function forceDelete(User $user, Question $question)
     {
         //
     }
