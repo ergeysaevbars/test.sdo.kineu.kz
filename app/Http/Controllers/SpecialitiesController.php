@@ -7,18 +7,25 @@ use App\Models\Test;
 use App\Models\Group;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class SpecialitiesController extends Controller
 {
-
-
     public function index(Test $test)
     {
+        if (Gate::denies('groups', $test)) {
+            return redirect()->route('tests.index');
+        }
+
         return view('test.groups', compact('test'));
     }
 
     public function add(Test $test)
     {
+        if (Gate::denies('groups', $test)) {
+            return redirect()->route('tests.index');
+        }
+
         $specialities = Speciality::query()->orderBy('name')->get();
         return view('test.add-group', compact('specialities', 'test'));
     }
@@ -30,6 +37,10 @@ class SpecialitiesController extends Controller
 
     public function store(Test $test, Request $request)
     {
+        if (Gate::denies('groups', $test)) {
+            return redirect()->route('tests.index');
+        }
+
         $validated = $request->validate([
             'group' => ['required', 'integer', 'min:1']
         ], [
@@ -45,6 +56,10 @@ class SpecialitiesController extends Controller
 
     public function detach(Test $test, Group $group)
     {
+        if (Gate::denies('groups', $test)) {
+            return redirect()->route('tests.index');
+        }
+
         $test->groups()->detach($group);
 
         return redirect()->back();

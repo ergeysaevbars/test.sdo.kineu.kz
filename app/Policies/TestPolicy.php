@@ -91,4 +91,9 @@ class TestPolicy
     {
         //
     }
+
+    public function groups(User $user, Test $test)
+    {
+        return $user == $test->author;
+    }
 }

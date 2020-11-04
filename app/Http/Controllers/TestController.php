@@ -7,6 +7,7 @@ use App\Models\Speciality;
 use App\Models\Test;
 use App\Models\TestsType;
 use Carbon\Carbon;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

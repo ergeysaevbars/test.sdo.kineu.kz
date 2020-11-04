@@ -66,7 +66,7 @@
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 @admin()
-                                <a href="" class="dropdown-item">Панель администратора</a>
+                                <a href="{{ route('admin.index') }}" class="dropdown-item">Панель администратора</a>
                                 @endadmin
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
